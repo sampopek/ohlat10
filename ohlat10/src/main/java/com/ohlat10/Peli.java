@@ -6,19 +6,21 @@ package com.ohlat10;
  */
 
 public class Peli {
-    private Pelaaja p1 = new Pelaaja();
-    private Pelaaja p2 = new Pelaaja();
+    private Pelaaja p1;
+    private Pelaaja p2;
     private KPS p1Valinta;
     private KPS p2Valinta;
-    private int pelatutPelit = 0;
-    private int tasapelit = 0;
-    private boolean peliLoppui = false;
+    private int pelatutPelit;
+    private int tasapelit;
+    private boolean peliLoppui;
 
     /**
      * Pelaa kivi-paperi-sakset peliä, kunnes toinen pelaaja voittaa saavuttamalla 3
      * pistettä
      */
     public void pelaa() {
+        alustaPeli();
+
         do {
             p1Valinta = p1.pelaajanValinta();
             p2Valinta = p2.pelaajanValinta();
@@ -46,7 +48,7 @@ public class Peli {
 
             peliLoppui = (p1.getVoitot() >= 3) || (p2.getVoitot() >= 3);
 
-        } while (peliLoppui != true);
+        } while (!peliLoppui);
         System.out.println("KOLME VOITTOA - PELI PÄÄTTYY");
     }
 
@@ -91,5 +93,16 @@ public class Peli {
         System.out.println("Pelaaja 1: " + p1Valinta + "\n\t Pelaaja 1:llä koossa " + p1.getVoitot() + " voittoa.");
         System.out.println("Pelaaja 2: " + p2Valinta + "\n\t Pelaaja 2:lla koossa " + p2.getVoitot() + " voittoa.");
         System.out.println(ilmoitus);
+    }
+
+    /**
+     * Alustaa pelissä tarvittavat muuttujat ja Pelaaja-oliot.
+     */
+    private void alustaPeli() {
+        p1 = new Pelaaja();
+        p2 = new Pelaaja();
+        pelatutPelit = 0;
+        tasapelit = 0;
+        peliLoppui = false;
     }
 }
