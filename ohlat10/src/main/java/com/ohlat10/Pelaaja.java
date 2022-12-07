@@ -2,39 +2,39 @@ package com.ohlat10;
 
 /**
  *
- * @author Ira Dook
+ * @author sampopek
  */
 public class Pelaaja {
 
-    int voitot; // Voittojen lukumäärä
-    int voitotYhteensä;
+    private int voitot; // Voittojen lukumäärä
 
     /**
-     * Valitse randomilla kivi, paperi tai sakset
+     * Valitse pelaajalle pseudosatunnaisesti {@link KPS}
+     * 
+     * @return palauttaa kivi-paperi-sakset käden {@link KPS}
      */
-    public String pelaajanValinta() {
-        String valinta = "";
+    public KPS pelaajanValinta() {
+        KPS valinta;
         int c = (int) (Math.random() * 3);
         switch (c) {
             case 0:
-                valinta = ("kivi");
+                valinta = KPS.KIVI;
                 break;
             case 1:
-                valinta = ("paperi");
+                valinta = KPS.PAPERI;
                 break;
-            case 2:
-                valinta = ("sakset");
+            default:
+                valinta = KPS.SAKSET;
                 break;
         }
         return valinta;
     }
 
-    public int setVoitot() {
-        int voitotYhteensä = voitot++;
-        return voitotYhteensä;
+    public void incrementVoitot() {
+        voitot++;
     }
 
     public int getVoitot() {
-        return (voitot);
+        return voitot;
     }
 }

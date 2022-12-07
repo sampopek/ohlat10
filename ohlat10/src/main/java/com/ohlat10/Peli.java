@@ -2,66 +2,94 @@ package com.ohlat10;
 
 /**
  *
- * @author Ira Dook
+ * @author sampopek
  */
+
 public class Peli {
+    private Pelaaja p1 = new Pelaaja();
+    private Pelaaja p2 = new Pelaaja();
+    private KPS p1Valinta;
+    private KPS p2Valinta;
+    private int pelatutPelit = 0;
+    private int tasapelit = 0;
+    private boolean peliLoppui = false;
 
-    public static void main(String args[]) {
-        Pelaaja p1 = new Pelaaja();
-        Pelaaja p2 = new Pelaaja();
-        boolean peliLoppui = false;
-        int pelatutPelit = 0; // Pelattujen pelien lkm
-        int p1Voitot = p1.voitot; // Pelaaja 1:n voittojen lkm
-        int p2Voitot = p2.voitot; // Pelaaja 2:n voittojen lkm
-        int tasapelit = 0; // Tasapelien lkm
-        String p1Valinta;
-        String p2Valinta;
-
+    /**
+     * Pelaa kivi-paperi-sakset peliä, kunnes toinen pelaaja voittaa saavuttamalla 3
+     * pistettä
+     */
+    public void pelaa() {
         do {
-            System.out.println("Erä: "
-                    + pelatutPelit + " =====================\n");
-            System.out.println("Tasapelien lukumäärä: "
-                    + tasapelit + "\n");
             p1Valinta = p1.pelaajanValinta();
-            System.out.println("Pelaaja 1: " + p1Valinta
-                    + "\n\t Pelaaja 1:llä koossa " + p1Voitot + " voittoa.");
             p2Valinta = p2.pelaajanValinta();
-            System.out.println("Pelaaja 2: " + p2Valinta
-                    + "\n\t Pelaaja 2:lla koossa " + p2Voitot + " voittoa.");
 
-            // Allaolevassa pätkässä on yritetty eri tapoja saada
-            // lukumäärän laskeminen toimimaan oikein.
-            // Ei tää kyllä vieläkään skulaa - KORJAA!
+            int voittaja = ratkaiseKierros(p1Valinta, p2Valinta);
 
-            if ((p1Valinta.equals("kivi")) && (p2Valinta.equals("paperi"))) {
-                System.out.println("Pelaaja 2 voittaa");
-                p2Voitot++; // Kokeile eri tapoja saada lukumäärän laskenta kuntoon
-            } else if ((p1Valinta.equals("paperi")) && (p2Valinta.equals("kivi"))) {
-                p1Voitot++;
-                System.out.println("Pelaaja 1 voittaa");
-            } else if ((p1Valinta.equals("kivi")) && (p2Valinta.equals("sakset"))) {
-                p1Voitot = p1.setVoitot();
-                System.out.println("Pelaaja 1 voittaa");
-            } else if ((p1Valinta.equals("sakset")) && (p2Valinta.equals("kivi"))) {
-                p2Voitot = p2.setVoitot();
-                System.out.println("Pelaaja 2 voittaa");
-            } else if ((p1Valinta.equals("sakset")) && (p2Valinta.equals("paperi"))) {
-                p1Voitot = p1.setVoitot();
-                System.out.println("Pelaaja 1 voittaa");
-            } else if ((p1Valinta.equals("paperi")) && (p2Valinta.equals("sakset"))) {
-                p2Voitot = p2.setVoitot();
-                System.out.println("Pelaaja 2 voittaa");
+            String ilmoitus;
+            switch (voittaja) {
+                case 1:
+                    p1.incrementVoitot();
+                    ilmoitus = "Pelaaja 1 voittaa";
+                    break;
+                case 2:
+                    p2.incrementVoitot();
+                    ilmoitus = "Pelaaja 2 voittaa";
+                    break;
+                default:
+                    tasapelit++;
+                    ilmoitus = "Tasapeli!";
             }
-            if (p1Valinta == p2Valinta) {
-                tasapelit++;
-                System.out.println("\n\t\t\t Tasapeli \n");
-            }
+
             pelatutPelit++;
-            if ((p1.getVoitot() >= 3) || (p2.getVoitot() >= 3)) {
-                peliLoppui = true;
-                System.out.println("KOLME VOITTOA - PELI PÄÄTTYY");
-            }
-            System.out.println();
+
+            ilmoitaKierroksenTiedot(ilmoitus);
+
+            peliLoppui = (p1.getVoitot() >= 3) || (p2.getVoitot() >= 3);
+
         } while (peliLoppui != true);
+        System.out.println("KOLME VOITTOA - PELI PÄÄTTYY");
+    }
+
+    /**
+     * Ratkaisee kivi-paperi-sakset pelin voittajan
+     * 
+     * @param p1Valinta pelaajan 1 valitsema käsi
+     * @param p2Valinta pelaajan 2 valitsema käsi
+     * @return voittaja, jossa 0 on tasapeli, 1 pelaaja 1 ja 2 pelaaja 2
+     */
+    public int ratkaiseKierros(KPS p1Valinta, KPS p2Valinta) {
+        int voittaja;
+
+        if (p1Valinta.equals(p2Valinta)) {
+            voittaja = 0;
+        } else {
+            switch (p1Valinta) {
+                case KIVI:
+                    voittaja = p2Valinta.equals(KPS.PAPERI) ? 2 : 1;
+                    break;
+                case PAPERI:
+                    voittaja = p2Valinta.equals(KPS.SAKSET) ? 2 : 1;
+                    break;
+                case SAKSET:
+                    voittaja = p2Valinta.equals(KPS.KIVI) ? 2 : 1;
+                    break;
+                default:
+                    voittaja = 0;
+            }
+        }
+        return voittaja;
+    }
+
+    /**
+     * Tulostaa konsoliin kierroksen tiedot
+     * 
+     * @param ilmoitus teksti jossa voidaan kertoa voittaja tai tasapeli
+     */
+    private void ilmoitaKierroksenTiedot(String ilmoitus) {
+        System.out.println("Erä: " + pelatutPelit + " =====================\n");
+        System.out.println("Tasapelien lukumäärä: " + tasapelit + "\n");
+        System.out.println("Pelaaja 1: " + p1Valinta + "\n\t Pelaaja 1:llä koossa " + p1.getVoitot() + " voittoa.");
+        System.out.println("Pelaaja 2: " + p2Valinta + "\n\t Pelaaja 2:lla koossa " + p2.getVoitot() + " voittoa.");
+        System.out.println(ilmoitus);
     }
 }
