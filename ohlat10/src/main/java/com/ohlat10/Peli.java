@@ -2,6 +2,8 @@ package com.ohlat10;
 
 /**
  *
+ * Kivi-paperi-sakset peli
+ * 
  * @author sampopek
  */
 

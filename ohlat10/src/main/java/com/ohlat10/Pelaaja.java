@@ -1,7 +1,10 @@
 package com.ohlat10;
 
 /**
- *
+ * Kivi-paperi-sakset pelissä käytettävä pelaaja. Arpoo pelaajalle
+ * pelissä
+ * käytettävän käden ja pitää kirjaa voitoista.
+ * 
  * @author sampopek
  */
 public class Pelaaja {
@@ -30,10 +33,18 @@ public class Pelaaja {
         return valinta;
     }
 
+    /**
+     * Kasvattaa voitot muuttujaa yhdellä
+     */
     public void incrementVoitot() {
         voitot++;
     }
 
+    /**
+     * Palauttaa pelaajan voitot
+     * 
+     * @return pelaajan voitot
+     */
     public int getVoitot() {
         return voitot;
     }
